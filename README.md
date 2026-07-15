@@ -4,6 +4,7 @@ A microservices-based student enrollment system with notification integration fo
 
 ---
 
+
 ## Features
 
 - Student Enrollment (Create, Read, Update, Delete)
@@ -14,6 +15,7 @@ A microservices-based student enrollment system with notification integration fo
 - Professional Web Interface
 
 ---
+
 
 ## Technologies
 
@@ -29,17 +31,23 @@ A microservices-based student enrollment system with notification integration fo
 
 ---
 
+
 ## Architecture Overview
+
 
 The system follows a Microservices Architecture with two independent services:
 
 1. **Enrollment Service (Port 3000):** Handles student CRUD operations and authentication
 2. **Notification Service (Port 3001):** Processes enrollment events and logs notifications
 
+
 ### Data Flow
+```
 Client → Enrollment Service → MySQL → RabbitMQ → Notification Service → MongoDB
+```
 
 ---
+
 
 ## Prerequisites
 
@@ -52,6 +60,7 @@ Client → Enrollment Service → MySQL → RabbitMQ → Notification Service �
 | Git | Latest |
 
 ---
+
 
 ## Setup Instructions
 
@@ -88,6 +97,7 @@ Open frontend/index.html in your browser or use Live Server.
 
 ---
 
+
 ## Environment Variables
 
 ### Enrollment Service (.env)
@@ -106,6 +116,7 @@ RABBITMQ_URL=amqp://localhost
 
 ---
 
+
 ## Default Login
 
 | Username | Password |
@@ -113,6 +124,7 @@ RABBITMQ_URL=amqp://localhost
 | admin | admin123 |
 
 ---
+
 
 ## API Endpoints
 
@@ -126,6 +138,7 @@ RABBITMQ_URL=amqp://localhost
 | DELETE | /api/students/:id | Yes | Delete student |
 
 ---
+
 
 ## Project Structure
 
@@ -148,6 +161,7 @@ student-system/
 ```
 ---
 
+
 ## Team Members
 
 | Name | Role |
@@ -159,11 +173,13 @@ student-system/
 
 ---
 
+
 ## License
 
 This project is for educational purposes only.
 
 ---
+
 
 ## Submission
 
@@ -171,3 +187,4 @@ This project is for educational purposes only.
 - Instructor: Mr. Joemel Atiga
 - Course: PC24 - System Integration and Architecture
 
+---
