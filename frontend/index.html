@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enrollment System</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- LOGIN PAGE (Shown First)                   -->
+    <!-- ========================================== -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Enrollment System</h1>
+                <p>Student Management Portal</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" value="admin" required />
+                </div>
+
+                <div class="form-group password-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="Enter password" value="admin123" required />
+                        <button type="button" id="togglePassword" class="toggle-btn">Show</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+                <p class="login-hint">Default: admin / admin123</p>
+            </form>
+
+            <div id="loginError" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- DASHBOARD (Hidden until login)             -->
+    <!-- ========================================== -->
+    <div id="dashboardPage" style="display: none;">
+
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <span class="brand-text">Enrollment System</span>
+                </div>
+                <div class="nav-links">
+                    <span id="userDisplay" class="user-display"></span>
+                    <button id="logoutBtn" class="btn btn-logout">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+
+            <!-- WELCOME BANNER -->
+            <div class="welcome-banner">
+                <h1>Welcome, <span id="studentName">Admin</span>!</h1>
+                <p>Manage student enrollments and track notifications</p>
+            </div>
+
+            <!-- STATISTICS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="totalStudents">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="pendingStudents">0</h3>
+                        <p>Pending</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="enrolledStudents">0</h3>
+                        <p>Enrolled</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3 id="totalNotifications">0</h3>
+                        <p>Notifications</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="openEnrollModal()">+ Enroll Student</button>
+                <button class="btn btn-outline" onclick="loadStudents()">Refresh</button>
+            </div>
+
+            <!-- STUDENT TABLE -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>Students</h2>
+                    <input type="text" id="searchInput" placeholder="Search students..." onkeyup="searchStudents()" />
+                </div>
+                <div id="studentsTableContainer">
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student #</th>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Year</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsBody">
+                            <tr><td colspan="7" class="loading-text">Loading students...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NOTIFICATIONS -->
+            <div class="section-card">
+                <h2>Notifications</h2>
+                <div id="notificationsList" class="notification-list">
+                    <p class="loading-text">Loading notifications...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ENROLL / EDIT MODAL                        -->
+    <!-- ========================================== -->
+    <div id="enrollModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Enroll New Student</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+
+            <form id="enrollForm">
+                <input type="hidden" id="editStudentId" />
+
+                <div class="form-group">
+                    <label for="studentNumber">Student Number</label>
+                    <input type="text" id="studentNumber" placeholder="e.g. 2024-0001" required />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" placeholder="First name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" placeholder="Last name" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="course">Course</label>
+                        <select id="course" required>
+                            <option value="">Select Course</option>
+                            <option value="BSIT">BSIT</option>
+                            <option value="BSCS">BSCS</option>
+                            <option value="BSIS">BSIS</option>
+                            <option value="BSBA">BSBA</option>
+                            <option value="BSED">BSED</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <select id="year" required>
+                            <option value="">Select Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" id="statusGroup" style="display:none;">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option value="Pending">Pending</option>
+                        <option value="Enrolled">Enrolled</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div id="formError" class="error-message"></div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Enroll Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- DELETE CONFIRMATION MODAL                  -->
+    <!-- ========================================== -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content delete-modal">
+            <div class="modal-header">
+                <h2>Confirm Delete</h2>
+                <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <p>Are you sure you want to delete this student?</p>
+            <p id="deleteStudentInfo" style="font-weight:600; color:#800020;"></p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TOAST NOTIFICATION                         -->
+    <!-- ========================================== -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

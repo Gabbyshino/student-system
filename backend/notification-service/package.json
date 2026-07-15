@@ -1,0 +1,20 @@
+{
+  "name": "notification-service",
+  "version": "1.0.0",
+  "description": "Notification Service for Student Enrollment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.0.0",
+    "amqplib": "^0.10.3",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
