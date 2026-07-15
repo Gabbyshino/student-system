@@ -129,6 +129,7 @@ RABBITMQ_URL=amqp://localhost
 
 ## Project Structure
 
+```
 student-system/
 ├── backend/
 │   ├── enrollment-service/
@@ -144,7 +145,7 @@ student-system/
 │   ├── style.css
 │   └── script.js
 └── README.md
-
+```
 ---
 
 ## Team Members
